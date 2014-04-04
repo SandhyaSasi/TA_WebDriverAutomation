@@ -1,11 +1,11 @@
 Feature: Login
-  Background:
-    Given the user "test90" with password "test@1234" exists
 
+  @wip
   Scenario: Login with valid credentials
-    Given i am in the login page
-    When i login with username "test01" and password "test@1234"
-    Then i am taken to the home page for "test01"
+    Given the user "test04" exists but yet to be activated
+    And i am in the login page
+    When i login with username "test04" and password "test@1234"
+    Then i am taken to the home page for "test04"
 
   Scenario: Login with invalid credentials
     Given i am in the login page
