@@ -36,6 +36,7 @@ GEM
       gherkin (~> 2.12)
       multi_json (>= 1.7.5, < 2.0)
       multi_test (>= 0.1.1)
+    database_cleaner (1.2.0)
     diff-lcs (1.2.5)
     ffi (1.9.3)
     gherkin (2.12.2)
@@ -82,6 +83,7 @@ DEPENDENCIES
   activerecord (~> 4.0.4)
   capypage (~> 0.2.6)
   cucumber (~> 1.3.9)
+  database_cleaner
   pg
   rest-client
   rspec

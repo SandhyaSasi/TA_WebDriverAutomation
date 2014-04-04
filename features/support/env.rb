@@ -1,7 +1,6 @@
 require 'bundler'
 Bundler.require
 
-require 'active_record'
 require_relative 'page_helper'
 
 World(PageHelper)
