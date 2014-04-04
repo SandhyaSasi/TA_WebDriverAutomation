@@ -70,3 +70,7 @@ end
 When(/^i activate the user "([^"]*)" with password "([^"]*)"$/) do |username, password|
   activate_user username,password
 end
+
+When(/^the confirmation mail for user "([^"]*)" was sent (\d+) days ago$/) do |username, days|
+  User.find_by(:username => username).update(:confirmation_sent_at => Time.now-days.to_i.day)
+end
