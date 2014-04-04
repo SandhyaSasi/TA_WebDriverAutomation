@@ -15,3 +15,12 @@ Feature: User management
     When i am taken to the reset password page
     And i reset password for username "test97" with password "test@1234"
     Then i see the error text "Token expired"
+
+  Scenario: Security requirements validation for password
+    Given the user "test99" exists but yet to be activated
+    And i goto inbox for user "test99"
+    And i view the "Confirmation instructions" mail
+    And i click on Confirm my account
+    When i am taken to the reset password page
+    And i reset password for username "test99" with password "test1234"
+    Then i see the error text "Your new password does not meet our security requirements, please create a new password."
