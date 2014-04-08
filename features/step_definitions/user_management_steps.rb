@@ -4,7 +4,7 @@ Given(/^i am in the login page$/) do
 end
 
 When(/^i (login with|reset password for) username "([^"]*)" (?:and|with) password "([^"]*)"$/) do |action, username, password|
-  action == 'login with' ? login_page.login(username,password) : login_page.reset_password(username,password)
+  action == 'login with' ? login_page.login(username,password) : login_page.reset_password(username,password,password)
 end
 
 Then(/^i am taken to the home page for "([^"]*)"$/) do |user|
@@ -52,15 +52,6 @@ When(/^i create a new user with following details$/) do |table|
   new_user_page.create_user.click
 end
 
-def activate_user username, password
-  open_inbox username
-  mailinator_inbox_page.emails.find_by_text('Confirmation instructions').click
-  expect(mailinator_inbox_page.confirm_account).to be_visible
-  mailinator_inbox_page.confirm_account.click
-  expect(login_page.confirm_password).to be_visible
-  login_page.reset_password username,password
-end
-
 def open_inbox username
   MailinatorInboxPage.set_url "http://mailinator.com/inbox.jsp?to=#{username}"
   mailinator_inbox_page.load
@@ -68,9 +59,22 @@ def open_inbox username
 end
 
 When(/^i activate the user "([^"]*)" with password "([^"]*)"$/) do |username, password|
-  activate_user username,password
+  open_inbox username
+  mailinator_inbox_page.confirm_user
+  expect(login_page.confirm_password).to be_visible
+  login_page.reset_password username, password, password
 end
 
 When(/^the confirmation mail for user "([^"]*)" was sent (\d+) days ago$/) do |username, days|
   User.find_by(:username => username).update(:confirmation_sent_at => Time.now-days.to_i.day)
+end
+
+When(/^the user "([^"]*)" navigates to password reset page using the "([^"]*)" mail$/) do |username, arg2|
+  open_inbox username
+  mailinator_inbox_page.confirm_user
+  expect(login_page.confirm_password).to be_visible
+end
+
+When(/^i reset password for username "([^"]*)" with password "([^"]*)" and confirm password "([^"]*)"$/) do |username, password, confirm_password|
+  login_page.reset_password(username,password,confirm_password)
 end
