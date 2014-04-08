@@ -3,13 +3,13 @@ class MailinatorInboxPage < Capypage::Page
   elements :emails, 'ul#mailcontainer', 'li.message div.subject'
   element :confirm_account, 'a.password_reset_link'
 
-  def confirm_user
-    emails.find_by_text('Confirmation instructions').click
-    confirm_account.click
-  end
-
-  def reset_password
-    emails.find_by_text('Reset password instructions').click
+  def act_on_mail subject
+    retries = 0
+    while !emails.find_by_text(subject).present? and retries < 60
+      load
+      retries = retries + 1
+    end
+    emails.find_by_text(subject).click
     confirm_account.click
   end
 end
