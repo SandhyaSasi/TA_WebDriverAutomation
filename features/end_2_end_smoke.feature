@@ -2,9 +2,7 @@ Feature: End to end smoke test
 
   Scenario: Smoke test
     Given the user "ashwin" exists but yet to be activated
-    And i goto inbox for user "ashwin"
-    And i view the "Confirmation instructions" mail
-    And i click on Confirm my account
+    And the user "ashwin" navigates to password reset page using the "Confirmation instructions" mail
     When i am taken to the set password page
     And i set password for username "ashwin" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin"

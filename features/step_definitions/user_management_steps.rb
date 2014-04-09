@@ -16,7 +16,7 @@ Then(/^i see the (?:error text|message) "([^"]*)"$/) do |exp_text|
 end
 
 Given(/^the user "([^"]*)" exists but yet to be activated$/) do |username|
-  @response = RestClient.post('http://127.0.0.1:3500/users/internal/admin', {'user' => {'username' => username, 'email' => "#{username}@mailinator.com", 'customer_id' => '18', 'currency' => 'EUR', 'timezone' => 'chennai', 'first_name' => username, 'last_name' => username, 'title' => 'MR', 'phone_number' => '999'}}, {:content_type => :json})
+  @response = RestClient.post('http://127.0.0.1:3500/users/internal/admin', {'user' => {'username' => username, 'email' => "#{username}@mailinator.com", 'customer_id' => 18, 'currency' => 'EUR', 'timezone' => 'chennai', 'first_name' => username, 'last_name' => username, 'title' => 'MR', 'phone_number' => '999'}}, {:content_type => :json})
   expect(@response.code).to eq(201)
 end
 

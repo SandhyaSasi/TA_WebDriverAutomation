@@ -18,7 +18,7 @@ Feature: User management
     Given the user "test02" exists but yet to be activated
     And the user "test02" navigates to password reset page using the "Confirmation instructions" mail
     Given i am taken to the set password page
-    When i set password for username "test02" with password "test1234" and confirm password "test@1234"
+    When i set password for username "test02" with password "test1234" and confirm password "test1234"
     Then i see the error text "Your new password does not meet our security requirements, please create a new password."
 
   Scenario: On account activation, password entries match validation
@@ -47,7 +47,7 @@ Feature: User management
     When i logout
     And i click on "Forgot password"
     And i see the password reset page with text "Please enter your User ID and click submit to reset your password."
-    And i specify username as "test04" and submit
+    And i specify username as "test05" and submit
     And i see the message "Thank you for requesting a password reset. You will receive an email shortly to the address we have on file for your account with instructions on how to reset your password. Please follow the link in this email to complete the reset process. Please note that the link in this email will only be valid for 24 hours. Thank you."
     And the user "test05" navigates to password reset page using the "Reset password instructions" mail
     And i am taken to the reset password page
