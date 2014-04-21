@@ -1,4 +1,6 @@
 require 'bundler'
+require 'timecop'
+
 Bundler.require
 
 require_relative 'page_helper'
@@ -11,6 +13,6 @@ class UserDB < ActiveRecord::Base
   self.abstract_class = true
 
   establish_connection :adapter => 'postgresql',
-                       :database => 'user_management_dev',
-                       :username => 'user_management_dev'
+                       :database => 'user_management_test',
+                       :username => 'user_management_test'
 end

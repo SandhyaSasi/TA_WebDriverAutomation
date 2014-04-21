@@ -14,6 +14,6 @@ module PageHelper
     end
   end
 
-  define_screens_for LoginPage, HomePage, MailinatorLoginPage, MailinatorInboxPage, UsersPage, NewUserPage
+  define_screens_for LoginPage, HomePage, UsersPage, NewUserPage, MailCatcherPage
 
 end
