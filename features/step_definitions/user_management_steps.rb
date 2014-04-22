@@ -19,10 +19,10 @@ end
 
 Given(/^the user "([^"]*)" exists but yet to be activated$/) do |username|
   #User.create(:id=>1,:username=>'ashwin.from.ta99',:email=>'ashwin.from.ta99@gmail.com',:encrypted_password=>'$2a$10$cUFGhRZ7dvvJTAfPTsHAveREAin.XBQkrgUjb9746/83.wQ7XHOmC',:customer_id=>18,:is_admin=>true, :is_active=>true, :sign_in_count=>1, :current_sign_in_at=>Time.now, :last_sign_in_at=>Time.now,:current_sign_in_ip=>'127.0.0.1',:last_sign_in_ip=>'127.0.0.1',:confirmed_at=>Time.now-1.minute,:confirmation_sent_at=>Time.now-2.minute,:failed_attempts=>0, :created_at=>Time.now-3.minute, :updated_at=>Time.now)
-
+  clear_mail_catcher
   @response = RestClient.post('http://127.0.0.1:3500/internal/admins', {'user' => {'username' => username, 'email' => "#{username}@gmail.com", 'customer_id' => 18, 'currency' => 'EUR', 'timezone' => 'chennai', 'first_name' => username, 'last_name' => username, 'title' => 'MR', 'phone_number' => '999'}}, {:content_type => :json})
   expect(@response.code).to eq(201)
-  $user_created_time=User.find_by(:username => username).confirmation_sent_at
+  #$user_created_time=User.find_by(:username => username).confirmation_sent_at
 end
 
 When(/^i goto inbox for user "([^"]*)"$/) do |username|
@@ -33,14 +33,14 @@ Given(/^i make the admin "([^"]*)" as normal user$/) do |username|
   User.find_by(:username => username).update(:is_admin => false)
 end
 
-When(/^i view the "([^"]*)" mail$/) do |exp_text|
-  mailinator_inbox_page.emails.find_by_text(exp_text).click
-  expect(mailinator_inbox_page.confirm_account).to be_visible
-end
+#When(/^i view the "([^"]*)" mail$/) do |exp_text|
+#  mailinator_inbox_page.emails.find_by_text(exp_text).click
+#  expect(mailinator_inbox_page.confirm_account).to be_visible
+#end
 
-When(/^i click on Confirm my account$/) do
-  mailinator_inbox_page.confirm_account.click
-end
+#When(/^i click on Confirm my account$/) do
+#  mailinator_inbox_page.confirm_account.click
+#end
 
 Then(/^i am taken to the (reset|set) password page$/) do |condition|
   expect(login_page.username).to be_visible if condition == 'set'
@@ -50,6 +50,7 @@ Then(/^i am taken to the (reset|set) password page$/) do |condition|
 end
 
 When(/^i create a new user with following details$/) do |table|
+  clear_mail_catcher
   user_details = table.hashes.first
   home_page.my_account.click
   home_page.my_team.click
@@ -60,32 +61,32 @@ When(/^i create a new user with following details$/) do |table|
   new_user_page.create_user.click
 end
 
-def open_inbox username, password
-  unless gmail_inbox_page.inbox_section.visible?
-    gmail_login_page.load
-    gmail_login_page.login username,password
-  end
-  expect(gmail_inbox_page.inbox_section).to be_visible
-end
+#def open_inbox username, password
+#  unless gmail_inbox_page.inbox_section.visible?
+#    gmail_login_page.load
+#    gmail_login_page.login username,password
+#  end
+#  expect(gmail_inbox_page.inbox_section).to be_visible
+#end
 
 def open_mail_catcher
   mail_catcher_page.load
 end
 
-When(/^i activate the user "([^"]*)" with password "([^"]*)"$/) do |username, password|
-  open_inbox username, 'trip@1234'
-  mailinator_inbox_page.act_on_mail 'Confirmation instructions'
-  expect(login_page.confirm_password).to be_visible
-  login_page.set_password username, password, password
-end
+#When(/^i activate the user "([^"]*)" with password "([^"]*)"$/) do |username, password|
+#  open_inbox username, 'trip@1234'
+#  mailinator_inbox_page.act_on_mail 'Confirmation instructions'
+#  expect(login_page.confirm_password).to be_visible
+#  login_page.set_password username, password, password
+#end
 
 When(/^the confirmation mail for user "([^"]*)" was sent (\d+) days ago$/) do |username, days|
   User.find_by(:username => username).update(:confirmation_sent_at => Time.now-days.to_i.day)
 end
 
-When(/^the user navigates to password reset page using the email received$/) do
+When(/^the user "([^"]*)" navigates to password reset page using the email received$/) do |username|
   open_mail_catcher
-  mail_catcher_page.act_on_mail
+  mail_catcher_page.act_on_mail username
   Capybara.current_session.driver.browser.tap {|browser|browser.switch_to.window(browser.window_handles.last)}
   expect(login_page.confirm_password).to be_visible
 end
@@ -150,4 +151,13 @@ When(/^"([^"]*)" minutes has passed after the account lock for user "([^"]*)"$/)
 end
 When(/^I get the confirmation sent time for user "([^"]*)"$/) do |username|
   $user_created_time=User.find_by(:username => username).confirmation_sent_at
+end
+
+def clear_mail_catcher
+  @response = RestClient.delete('http://127.0.0.1:1080/messages', {:content_type => :json})
+  expect(@response.code).to eq(204)
+end
+When(/^i click "([^"]*)"$/) do |link|
+  clear_mail_catcher
+  login_page.send(link.downcase.gsub(' ','_')).click
 end

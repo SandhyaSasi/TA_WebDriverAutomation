@@ -7,7 +7,7 @@ Feature: User management
 
   Scenario: Account activation after confirmation token expires
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given the confirmation mail for user "ashwin.from.ta99" was sent 1 days ago
     And i am taken to the set password page
     When i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
@@ -15,28 +15,28 @@ Feature: User management
 
   Scenario: On account activation, password strength validation
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i am taken to the set password page
     When i set password for username "ashwin.from.ta99" with password "test1234" and confirm password "test1234"
     Then i see the error text "Your new password does not meet our security requirements, please create a new password."
 
   Scenario: On account activation, password entries do not match validation
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i am taken to the set password page
     When i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test1234"
     Then i see the error text "Your password entries don't match, please confirm your new password again."
 
   Scenario: On account activation, wrong user name given
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i am taken to the set password page
     When i set password for username "ashwin.from.98" with password "test@1234" and confirm password "test@1234"
     Then i see the error text "Confirmation error! Either your username doesn't match or your password is already set."
 
   Scenario: Normal user do not have access to create new user
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i make the admin "ashwin.from.ta99" as normal user
     And i am taken to the set password page
     When i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
@@ -45,71 +45,68 @@ Feature: User management
 
   Scenario: User forgets password and goes for Password reset with user name
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i make the admin "ashwin.from.ta99" as normal user
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
     When i logout
-    And i click on "Forgot password"
+    And i click "Forgot password"
     And i see the password reset page with text "Please enter your User ID and click submit to reset your password."
     And i specify username as "ashwin.from.ta99" and submit
     And i see the message "Thank you for requesting a password reset. You will receive an email shortly to the address we have on file for your account with instructions on how to reset your password. Please follow the link in this email to complete the reset process. Please note that the link in this email will only be valid for 24 hours. Thank you."
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     And i am taken to the reset password page
     When i reset password with password "Test1234" and confirm password "Test1234"
     And i am taken to the home page for "ashwin.from.ta99"
   @defect
   Scenario: On password reset, password strength validation
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
-    Given i make the admin "ashwin.from.ta99" as normal user
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
     When i logout
-    And i click on "Forgot password"
+    And i click "Forgot password"
     And i see the password reset page with text "Please enter your User ID and click submit to reset your password."
     And i specify username as "ashwin.from.ta99" and submit
     And i see the message "Thank you for requesting a password reset. You will receive an email shortly to the address we have on file for your account with instructions on how to reset your password. Please follow the link in this email to complete the reset process. Please note that the link in this email will only be valid for 24 hours. Thank you."
-    And the reset password mail for user "ashwin.from.ta99" was sent 1 days ago
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Then i am taken to the reset password page
     When i reset password with password "Test123" and confirm password "Test123"
     Then i see the error text "Your new password does not meet our security requirements, please create a new password."
 
   Scenario: On password reset, password entries match validation
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i make the admin "ashwin.from.ta99" as normal user
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
     When i logout
-    And i click on "Forgot password"
+    And i click "Forgot password"
     And i see the password reset page with text "Please enter your User ID and click submit to reset your password."
     And i specify username as "ashwin.from.ta99" and submit
     And i see the message "Thank you for requesting a password reset. You will receive an email shortly to the address we have on file for your account with instructions on how to reset your password. Please follow the link in this email to complete the reset process. Please note that the link in this email will only be valid for 24 hours. Thank you."
-    And the reset password mail for user "ashwin.from.ta99" was sent 1 days ago
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Then i am taken to the reset password page
     When i reset password with password "Test@123" and confirm password "Test#123"
     Then i see the error text "Your password entries don't match, please confirm your new password again."
-  @defect
+
   Scenario: Password reset after token expires
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i make the admin "ashwin.from.ta99" as normal user
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
     When i logout
-    And i click on "Forgot password"
+    And i click "Forgot password"
     And i see the password reset page with text "Please enter your User ID and click submit to reset your password."
     And i specify username as "ashwin.from.ta99" and submit
     And i see the message "Thank you for requesting a password reset. You will receive an email shortly to the address we have on file for your account with instructions on how to reset your password. Please follow the link in this email to complete the reset process. Please note that the link in this email will only be valid for 24 hours. Thank you."
     And the reset password mail for user "ashwin.from.ta99" was sent 1 days ago
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Then i am taken to the reset password page
     When i reset password with password "Test1234" and confirm password "Test1234"
     Then i see the error text "Invalid reset token"
@@ -117,13 +114,13 @@ Feature: User management
 
   Scenario: User forgets his username and goes for Forgot username with email id. Only appropriate admin gets the notification.
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     Given i make the admin "ashwin.from.ta99" as normal user
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
     When i logout
-    And i click on "Forgot User ID"
+    And i click "Forgot User ID"
     And i see the User ID request page with text " Please enter the email address associated with the User ID you have forgotten."
     And i specify email as "ashwin.from.ta99@gmail.com" and submit
     And i see the message "We have processed your request to reset your User ID. An Email has been sent to the TripAdvisor Partners Portal administrator for your account. Please contact this administrator for your User ID. Thank you."
@@ -136,7 +133,7 @@ Feature: User management
 
   Scenario: Lock account with 5 tries, 6th time valid should not be allowed. Post 10 mins the valid credentials are accepted
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     And i am taken to the set password page
     And i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     And i am taken to the home page for "ashwin.from.ta99"
@@ -155,12 +152,12 @@ Feature: User management
 
   Scenario: Creation of more than one admin for an account is not allowed
    Given the user "ashwin.from.ta99" exists but yet to be activated
-   And the user navigates to password reset page using the email received
+   And the user "ashwin.from.ta99" navigates to password reset page using the email received
    And i am taken to the set password page
    When i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
    Then i am taken to the home page for "ashwin.from.ta99"
    Given the user "san.from.ta99" exists but yet to be activated
-   And the user navigates to password reset page using the email received
+   And the user "san.from.ta99" navigates to password reset page using the email received
    And i am taken to the set password page
    When i set password for username "san.from.ta99" with password "test@1234" and confirm password "test@1234"
    Then i am taken to the home page for "san.from.ta99"
@@ -169,10 +166,10 @@ Feature: User management
    When i login with username "ashwin.from.ta99" and password "test@1234"
    Then i am taken to the home page for "ashwin.from.ta99"
    And I do not have access to My Account link
-  @now
+
   Scenario: Creation of a normal user by admin and activation. Creation on another normal user with the same user name should fail.
     Given the user "ashwin.from.ta99" exists but yet to be activated
-    And the user navigates to password reset page using the email received
+    And the user "ashwin.from.ta99" navigates to password reset page using the email received
     And i am taken to the set password page
     When i set password for username "ashwin.from.ta99" with password "test@1234" and confirm password "test@1234"
     Then i am taken to the home page for "ashwin.from.ta99"
@@ -181,7 +178,7 @@ Feature: User management
     | san        |  s       | san.from.ta99 |san.from.ta99@gmail.com  |
     And I get the confirmation sent time for user "san.from.ta99"
     Then i see the message "User successfully created!"
-    When the user navigates to password reset page using the email received
+    When the user "san.from.ta99" navigates to password reset page using the email received
     And i am taken to the set password page
     When i set password for username "san.from.ta99" with password "test@1234" and confirm password "test@1234"
     Then i am taken to the home page for "san.from.ta99"
